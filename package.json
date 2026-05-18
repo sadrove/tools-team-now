@@ -1,0 +1,20 @@
+{
+  "name": "tools-team-now-mcp",
+  "version": "0.1.0",
+  "description": "ToolsTeamNow MCP server for Kakao Tools testing.",
+  "type": "module",
+  "private": true,
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "node src/node-server.js",
+    "dev": "HOST=127.0.0.1 PORT=8787 node src/node-server.js",
+    "test": "node --test",
+    "deploy:cloudflare": "wrangler deploy",
+    "openapi:write": "node scripts/generate-openapi.mjs"
+  },
+  "devDependencies": {
+    "wrangler": "^4.34.0"
+  }
+}

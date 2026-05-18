@@ -1,0 +1,10 @@
+name = "tools-team-now"
+main = "src/worker.js"
+compatibility_date = "2026-05-17"
+workers_dev = true
+
+[vars]
+# Comma-separated browser origins allowed by CORS, e.g.
+# ALLOWED_ORIGINS = "https://preview-chatgpt.kakao.com,https://tools.kakao.com"
+ALLOWED_ORIGINS = ""
+API_BASE_URL = "https://tools-team-now.toolsteamnow.workers.dev"

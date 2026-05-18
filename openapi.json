@@ -1,0 +1,41 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "ToolsTeamNow API",
+    "version": "0.1.0",
+    "description": "ToolsTeamNow(툴즈팀나우)는 씨엘, 루카, 아린, 베니 중 한 명이 지금 무엇을 하고 있는지 Kakao Tools 위젯 payload로 알려주는 테스트용 API입니다."
+  },
+  "servers": [
+    {
+      "url": "https://tools-team-now.toolsteamnow.workers.dev"
+    }
+  ],
+  "paths": {
+    "/tools-team-now": {
+      "get": {
+        "operationId": "tools_team_now",
+        "summary": "Get current ToolsTeamNow status",
+        "description": "Returns a Kakao Tools widget payload that says what 씨엘, 루카, 아린, or 베니 is doing right now.",
+        "responses": {
+          "200": {
+            "description": "Current ToolsTeamNow widget payload",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["widget", "copy_text", "name"],
+                  "properties": {
+                    "widget": {"type": "object", "additionalProperties": true},
+                    "copy_text": {"type": "string"},
+                    "name": {"type": "string", "const": "tools_team_now"}
+                  },
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
