@@ -6,7 +6,7 @@ Use this flow when registering ToolsTeamNow through the OpenAPI-based MCP Builde
 
 - MCP 서버 이름: `ToolsTeamNow`
 - 아이콘: `✨`
-- 설명: `씨엘, 루카, 아린, 베니 중 한 명이 지금 무엇을 하고 있는지 위젯 형태로 알려주는 테스트용 MCP 서버입니다.`
+- 설명: `씨엘, 아린, 루카, 션 중 한 명이 지금 무엇을 하고 있는지 위젯 형태로 알려주는 테스트용 MCP 서버입니다.`
 - 태그: `test, mcp, widget, teamnow`
 - OpenAPI Specification JSON: upload `openapi.json` from this project
 

@@ -4,7 +4,7 @@ ToolsTeamNow is a tiny remote MCP server for Kakao Tools testing. It exposes one
 
 - `tools_team_now`: returns a Kakao Tools widget payload that renders a sentence like `씨엘은 지금 아무 생각 없이 모니터를 바라보고 있다.`
 
-Nicknames are `씨엘`, `루카`, `아린`, and `베니`.
+Nicknames are `씨엘`, `아린`, `루카`, and `션`.
 
 ## Guide Alignment
 
@@ -57,6 +57,6 @@ curl -s http://127.0.0.1:8787/mcp \
 ## Docker
 
 ```bash
-docker buildx build --platform linux/amd64 -t tools-team-now:0.1.0 --load .
-docker run --rm -p 8787:8787 tools-team-now:0.1.0
+docker buildx build --platform linux/amd64 -t tools-team-now:0.1.1 --load .
+docker run --rm -p 8787:8787 tools-team-now:0.1.1
 ```

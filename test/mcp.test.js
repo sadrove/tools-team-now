@@ -76,12 +76,22 @@ test("tools_team_now returns a Kakao widget payload as text content", () => {
 });
 
 test("tools_team_now uses a natural topic particle for nicknames", () => {
-  const randomValues = [0.26, 0, 0];
+  const randomValues = [0.51, 0, 0];
   const random = () => randomValues.shift() ?? 0;
 
   assert.equal(
     createNowSentence(random),
     "루카는 지금 아무 생각 없이 모니터를 바라보고 있다."
+  );
+});
+
+test("tools_team_now includes 션 as a team member", () => {
+  const randomValues = [0.99, 0, 0];
+  const random = () => randomValues.shift() ?? 0;
+
+  assert.equal(
+    createNowSentence(random),
+    "션은 지금 아무 생각 없이 모니터를 바라보고 있다."
   );
 });
 

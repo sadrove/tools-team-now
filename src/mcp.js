@@ -1,8 +1,8 @@
 export const PROTOCOL_VERSION = "2025-03-26";
 export const SERVER_NAME = "ToolsTeamNow";
-export const SERVER_VERSION = "0.1.0";
+export const SERVER_VERSION = "0.1.1";
 
-export const NICKNAMES = ["씨엘", "루카", "아린", "베니"];
+export const NICKNAMES = ["씨엘", "아린", "루카", "션"];
 
 const FEELINGS = [
   "아무 생각 없이",
@@ -30,7 +30,7 @@ export const TOOLS = [
   {
     name: "tools_team_now",
     description:
-      "Returns a Kakao Tools widget from ToolsTeamNow(툴즈팀나우) that says what 씨엘, 루카, 아린, or 베니 is doing right now.",
+      "Returns a Kakao Tools widget from ToolsTeamNow(툴즈팀나우) that says what 씨엘, 아린, 루카, or 션 is doing right now.",
     inputSchema: {
       type: "object",
       properties: {},

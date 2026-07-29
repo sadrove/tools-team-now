@@ -9,7 +9,7 @@ export function createOpenApiDocument(baseUrl) {
       title: `${SERVER_NAME} API`,
       version: SERVER_VERSION,
       description:
-        "ToolsTeamNow(툴즈팀나우)는 씨엘, 루카, 아린, 베니 중 한 명이 지금 무엇을 하고 있는지 Kakao Tools 위젯 payload로 알려주는 테스트용 API입니다."
+        "ToolsTeamNow(툴즈팀나우)는 씨엘, 아린, 루카, 션 중 한 명이 지금 무엇을 하고 있는지 Kakao Tools 위젯 payload로 알려주는 테스트용 API입니다."
     },
     servers: [
       {
@@ -22,7 +22,7 @@ export function createOpenApiDocument(baseUrl) {
           operationId: "tools_team_now",
           summary: "Get current ToolsTeamNow status",
           description:
-            "Returns a Kakao Tools widget payload that says what 씨엘, 루카, 아린, or 베니 is doing right now.",
+            "Returns a Kakao Tools widget payload that says what 씨엘, 아린, 루카, or 션 is doing right now.",
           responses: {
             "200": {
               description: "Current ToolsTeamNow widget payload",
