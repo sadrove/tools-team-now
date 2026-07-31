@@ -2,8 +2,8 @@
   "openapi": "3.1.0",
   "info": {
     "title": "ToolsTeamNow API",
-    "version": "0.1.1",
-    "description": "ToolsTeamNow(툴즈팀나우)는 씨엘, 아린, 루카, 션 중 한 명이 지금 무엇을 하고 있는지 Kakao Tools 위젯 payload로 알려주는 테스트용 API입니다."
+    "version": "0.2.0",
+    "description": "ToolsTeamNow(툴즈팀나우)는 씨엘, 아린, 루카, 션 네 명이 지금 무엇을 하고 있는지 Kakao Tools ListView 위젯 payload로 보여주는 테스트용 API입니다."
   },
   "servers": [
     {
@@ -23,13 +23,120 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "required": ["widget", "copy_text", "name"],
+                  "required": [
+                    "widget",
+                    "copy_text",
+                    "name"
+                  ],
                   "properties": {
-                    "widget": {"type": "object", "additionalProperties": true},
-                    "copy_text": {"type": "string"},
-                    "name": {"type": "string", "const": "tools_team_now"}
+                    "widget": {
+                      "type": "object",
+                      "required": [
+                        "type",
+                        "children"
+                      ],
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "const": "ListView"
+                        },
+                        "children": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "required": [
+                              "type",
+                              "children"
+                            ],
+                            "properties": {
+                              "type": {
+                                "type": "string",
+                                "const": "ListViewItem"
+                              },
+                              "children": {
+                                "type": "array"
+                              }
+                            },
+                            "additionalProperties": true
+                          }
+                        }
+                      },
+                      "additionalProperties": true
+                    },
+                    "copy_text": {
+                      "type": "string",
+                      "description": "Markdown text used by KakaoTalk sharing."
+                    },
+                    "name": {
+                      "type": "string",
+                      "const": "tools_team_now"
+                    }
                   },
                   "additionalProperties": false
+                },
+                "examples": {
+                  "default": {
+                    "value": {
+                      "widget": {
+                        "type": "ListView",
+                        "limit": 4,
+                        "children": [
+                          {
+                            "type": "ListViewItem",
+                            "children": [
+                              {
+                                "type": "Box",
+                                "direction": "row",
+                                "align": "center",
+                                "justify": "between",
+                                "gap": 12,
+                                "children": [
+                                  {
+                                    "type": "Box",
+                                    "direction": "row",
+                                    "align": "center",
+                                    "gap": 10,
+                                    "children": [
+                                      {
+                                        "type": "Text",
+                                        "value": "✨",
+                                        "size": "lg"
+                                      },
+                                      {
+                                        "type": "Col",
+                                        "gap": 2,
+                                        "children": [
+                                          {
+                                            "type": "Title",
+                                            "value": "씨엘",
+                                            "size": "sm",
+                                            "weight": "semibold"
+                                          },
+                                          {
+                                            "type": "Caption",
+                                            "value": "지금 아무 생각 없이 모니터를 바라보고 있다."
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "type": "Badge",
+                                    "label": "무념",
+                                    "color": "secondary",
+                                    "variant": "soft",
+                                    "pill": true
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      "copy_text": "**Tools Team Now**\n\n- **씨엘** 지금 아무 생각 없이 모니터를 바라보고 있다. `무념`",
+                      "name": "tools_team_now"
+                    }
+                  }
                 }
               }
             }
