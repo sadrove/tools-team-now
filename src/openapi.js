@@ -38,20 +38,16 @@ export function createOpenApiDocument(baseUrl) {
                         properties: {
                           type: {
                             type: "string",
-                            const: "ListView"
+                            const: "Card"
                           },
                           children: {
                             type: "array",
                             items: {
                               type: "object",
-                              required: ["type", "children"],
+                              required: ["type"],
                               properties: {
                                 type: {
-                                  type: "string",
-                                  const: "ListViewItem"
-                                },
-                                children: {
-                                  type: "array"
+                                  type: "string"
                                 }
                               },
                               additionalProperties: true
@@ -75,65 +71,56 @@ export function createOpenApiDocument(baseUrl) {
                     default: {
                       value: {
                         widget: {
-                          type: "ListView",
-                          limit: 4,
+                          type: "Card",
                           children: [
                             {
-                              type: "ListViewItem",
+                              type: "Row",
+                              align: "center",
+                              gap: 12,
                               children: [
                                 {
                                   type: "Box",
-                                  direction: "row",
                                   align: "center",
-                                  gap: 12,
+                                  justify: "center",
+                                  size: 40,
+                                  radius: "full",
+                                  background: { light: "#F1F2F4", dark: "#2B2B30" },
+                                  children: [{ type: "Text", value: "😎", size: "md" }]
+                                },
+                                {
+                                  type: "Col",
+                                  flex: 1,
+                                  gap: 2,
                                   children: [
                                     {
-                                      type: "Box",
+                                      type: "Row",
                                       align: "center",
-                                      justify: "center",
-                                      width: 40,
-                                      height: 40,
-                                      radius: "full",
-                                      background: { light: "#F1F2F4", dark: "#2B2B30" },
-                                      children: [{ type: "Text", value: "😎", size: "md" }]
-                                    },
-                                    {
-                                      type: "Col",
-                                      flex: 1,
-                                      gap: 2,
+                                      gap: 6,
                                       children: [
                                         {
-                                          type: "Box",
-                                          direction: "row",
-                                          align: "center",
-                                          gap: 6,
-                                          children: [
-                                            {
-                                              type: "Title",
-                                              value: "씨엘",
-                                              size: "sm",
-                                              weight: "semibold"
-                                            },
-                                            {
-                                              type: "Badge",
-                                              label: "무념",
-                                              color: "secondary",
-                                              variant: "soft",
-                                              pill: true
-                                            }
-                                          ]
+                                          type: "Title",
+                                          value: "씨엘",
+                                          size: "sm",
+                                          weight: "semibold"
                                         },
                                         {
-                                          type: "Caption",
-                                          value: "지금 아무 생각 없이 모니터를 바라보고 있다."
+                                          type: "Badge",
+                                          label: "무념",
+                                          color: "secondary",
+                                          variant: "soft",
+                                          pill: true
                                         }
                                       ]
+                                    },
+                                    {
+                                      type: "Caption",
+                                      value: "지금 아무 생각 없이 모니터를 바라보고 있다."
                                     }
                                   ]
-                                },
-                                { type: "Divider", flush: true }
+                                }
                               ]
-                            }
+                            },
+                            { type: "Divider", spacing: 4 }
                           ]
                         },
                         copy_text:

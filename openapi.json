@@ -2,7 +2,7 @@
   "openapi": "3.1.0",
   "info": {
     "title": "ToolsTeamNow API",
-    "version": "0.2.1",
+    "version": "0.2.2",
     "description": "ToolsTeamNow(툴즈팀나우)는 씨엘, 아린, 루카, 션 네 명이 지금 무엇을 하고 있는지 Kakao Tools ListView 위젯 payload로 보여주는 테스트용 API입니다."
   },
   "servers": [
@@ -38,23 +38,18 @@
                       "properties": {
                         "type": {
                           "type": "string",
-                          "const": "ListView"
+                          "const": "Card"
                         },
                         "children": {
                           "type": "array",
                           "items": {
                             "type": "object",
                             "required": [
-                              "type",
-                              "children"
+                              "type"
                             ],
                             "properties": {
                               "type": {
-                                "type": "string",
-                                "const": "ListViewItem"
-                              },
-                              "children": {
-                                "type": "array"
+                                "type": "string"
                               }
                             },
                             "additionalProperties": true
@@ -78,76 +73,67 @@
                   "default": {
                     "value": {
                       "widget": {
-                        "type": "ListView",
-                        "limit": 4,
+                        "type": "Card",
                         "children": [
                           {
-                            "type": "ListViewItem",
+                            "type": "Row",
+                            "align": "center",
+                            "gap": 12,
                             "children": [
                               {
                                 "type": "Box",
-                                "direction": "row",
                                 "align": "center",
-                                "gap": 12,
+                                "justify": "center",
+                                "size": 40,
+                                "radius": "full",
+                                "background": {
+                                  "light": "#F1F2F4",
+                                  "dark": "#2B2B30"
+                                },
                                 "children": [
                                   {
-                                    "type": "Box",
-                                    "align": "center",
-                                    "justify": "center",
-                                    "width": 40,
-                                    "height": 40,
-                                    "radius": "full",
-                                    "background": {
-                                      "light": "#F1F2F4",
-                                      "dark": "#2B2B30"
-                                    },
-                                    "children": [
-                                      {
-                                        "type": "Text",
-                                        "value": "😎",
-                                        "size": "md"
-                                      }
-                                    ]
-                                  },
-                                  {
-                                    "type": "Col",
-                                    "flex": 1,
-                                    "gap": 2,
-                                    "children": [
-                                      {
-                                        "type": "Box",
-                                        "direction": "row",
-                                        "align": "center",
-                                        "gap": 6,
-                                        "children": [
-                                          {
-                                            "type": "Title",
-                                            "value": "씨엘",
-                                            "size": "sm",
-                                            "weight": "semibold"
-                                          },
-                                          {
-                                            "type": "Badge",
-                                            "label": "무념",
-                                            "color": "secondary",
-                                            "variant": "soft",
-                                            "pill": true
-                                          }
-                                        ]
-                                      },
-                                      {
-                                        "type": "Caption",
-                                        "value": "지금 아무 생각 없이 모니터를 바라보고 있다."
-                                      }
-                                    ]
+                                    "type": "Text",
+                                    "value": "😎",
+                                    "size": "md"
                                   }
                                 ]
                               },
                               {
-                                "type": "Divider",
-                                "flush": true
+                                "type": "Col",
+                                "flex": 1,
+                                "gap": 2,
+                                "children": [
+                                  {
+                                    "type": "Row",
+                                    "align": "center",
+                                    "gap": 6,
+                                    "children": [
+                                      {
+                                        "type": "Title",
+                                        "value": "씨엘",
+                                        "size": "sm",
+                                        "weight": "semibold"
+                                      },
+                                      {
+                                        "type": "Badge",
+                                        "label": "무념",
+                                        "color": "secondary",
+                                        "variant": "soft",
+                                        "pill": true
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "type": "Caption",
+                                    "value": "지금 아무 생각 없이 모니터를 바라보고 있다."
+                                  }
+                                ]
                               }
                             ]
+                          },
+                          {
+                            "type": "Divider",
+                            "spacing": 4
                           }
                         ]
                       },

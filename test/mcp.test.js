@@ -83,28 +83,30 @@ test("createTeamStatuses gives each teammate a distinct emoji from the pool", ()
   assert.deepEqual(emojis, ["😎", "🤓", "🧐", "🥸"]);
 });
 
-test("tools_team_now returns a Kakao ListView board with one item per member", () => {
+test("tools_team_now returns a Kakao Card board with one row per member", () => {
   const response = toolsTeamNowTool(() => 0);
   const payload = JSON.parse(response.content[0].text);
 
   assert.equal(payload.name, "tools_team_now");
-  assert.equal(payload.widget.type, "ListView");
-  assert.equal(payload.widget.children.length, 4);
-  for (const item of payload.widget.children) {
-    assert.equal(item.type, "ListViewItem");
-  }
+  assert.equal(payload.widget.type, "Card");
+
+  const rows = payload.widget.children.filter((child) => child.type === "Row");
+  assert.equal(rows.length, 4);
   assert.equal(Object.hasOwn(payload.widget, "status"), false);
 });
 
-test("each board item shows the mood badge right next to the name", () => {
+test("member rows keep fixed order with the mood badge next to the name", () => {
   const payload = createToolsTeamNowWidget(() => 0);
-  const contentBox = payload.widget.children[0].children[0];
-  const col = contentBox.children[1];
-  const nameRow = col.children[0];
+  const rows = payload.widget.children.filter((child) => child.type === "Row");
 
-  assert.equal(nameRow.direction, "row");
+  assert.deepEqual(
+    rows.map((row) => row.children[1].children[0].children[0].value),
+    ["씨엘", "아린", "루카", "션"]
+  );
+
+  const nameRow = rows[0].children[1].children[0];
+  assert.equal(nameRow.type, "Row");
   assert.equal(nameRow.children[0].type, "Title");
-  assert.equal(nameRow.children[0].value, "씨엘");
 
   const badge = nameRow.children[1];
   assert.equal(badge.type, "Badge");
@@ -112,27 +114,24 @@ test("each board item shows the mood badge right next to the name", () => {
   assert.equal(badge.color, "secondary");
 });
 
-test("emoji sits in a rounded avatar box with a background", () => {
+test("emoji sits in a fixed rounded avatar box with a background", () => {
   const payload = createToolsTeamNowWidget(() => 0);
-  const avatar = payload.widget.children[0].children[0].children[0];
+  const avatar = payload.widget.children[0].children[0];
 
+  assert.equal(avatar.type, "Box");
   assert.ok(avatar.background, "avatar should have a background");
-  assert.equal(avatar.children[0].type, "Text");
+  assert.equal(avatar.radius, "full");
+  assert.equal(avatar.size, 40);
   assert.equal(avatar.children[0].value, "😎");
 });
 
-test("board items are separated by a divider except the last", () => {
+test("member rows are separated by dividers and do not end on one", () => {
   const payload = createToolsTeamNowWidget(() => 0);
-  const items = payload.widget.children;
+  const dividers = payload.widget.children.filter((child) => child.type === "Divider");
+  assert.equal(dividers.length, 3);
 
-  items.forEach((item, index) => {
-    const lastChild = item.children[item.children.length - 1];
-    if (index < items.length - 1) {
-      assert.equal(lastChild.type, "Divider");
-    } else {
-      assert.notEqual(lastChild.type, "Divider");
-    }
-  });
+  const lastChild = payload.widget.children[payload.widget.children.length - 1];
+  assert.equal(lastChild.type, "Row");
 });
 
 test("copy_text lists every teammate with their mood", () => {
@@ -194,7 +193,7 @@ test("worker adapter serves REST API and OpenAPI endpoints", async () => {
 
   assert.equal(apiResponse.status, 200);
   assert.equal(apiPayload.name, "tools_team_now");
-  assert.equal(apiPayload.widget.type, "ListView");
+  assert.equal(apiPayload.widget.type, "Card");
 
   const openApiResponse = await worker.fetch(
     new Request("https://example.com/openapi.json")
