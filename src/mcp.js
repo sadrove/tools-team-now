@@ -1,18 +1,23 @@
 export const PROTOCOL_VERSION = "2025-03-26";
 export const SERVER_NAME = "ToolsTeamNow";
-export const SERVER_VERSION = "0.1.1";
+export const SERVER_VERSION = "0.2.0";
 
-export const NICKNAMES = ["씨엘", "아린", "루카", "션"];
+export const TEAM = ["씨엘", "아린", "루카", "션"];
 
-const FEELINGS = [
-  "아무 생각 없이",
-  "조용히",
-  "살짝 신나서",
-  "멍하니",
-  "집중한 척하며",
-  "차분하게",
-  "왠지 뿌듯하게",
-  "잠깐 쉬는 마음으로"
+export const EMOJIS = [
+  "✨", "🌙", "⚡", "🌿", "☕", "💻", "📝", "🎧", "🧩", "🔥",
+  "🌈", "🍀", "🪄", "📌", "🖊️", "🧠", "🫖", "🕯️", "🌻", "🐢"
+];
+
+export const MOODS = [
+  { phrase: "아무 생각 없이", label: "무념", color: "secondary" },
+  { phrase: "조용히", label: "고요", color: "info" },
+  { phrase: "살짝 신나서", label: "신남", color: "success" },
+  { phrase: "멍하니", label: "멍", color: "secondary" },
+  { phrase: "집중한 척하며", label: "집중", color: "discovery" },
+  { phrase: "차분하게", label: "차분", color: "info" },
+  { phrase: "왠지 뿌듯하게", label: "뿌듯", color: "warning" },
+  { phrase: "잠깐 쉬는 마음으로", label: "휴식", color: "success" }
 ];
 
 const ACTIONS = [
@@ -30,7 +35,7 @@ export const TOOLS = [
   {
     name: "tools_team_now",
     description:
-      "Returns a Kakao Tools widget from ToolsTeamNow(툴즈팀나우) that says what 씨엘, 아린, 루카, or 션 is doing right now.",
+      "Returns a Kakao Tools widget from ToolsTeamNow(툴즈팀나우) showing what all four teammates — 씨엘, 아린, 루카, and 션 — are doing right now as a team status board.",
     inputSchema: {
       type: "object",
       properties: {},
@@ -125,29 +130,84 @@ export function toolsTeamNowTool(random = Math.random) {
 }
 
 export function createToolsTeamNowWidget(random = Math.random) {
-  const sentence = createNowSentence(random);
+  const statuses = createTeamStatuses(random);
 
   return {
     widget: {
-      type: "Card",
-      children: [
-        {
-          type: "Text",
-          value: sentence
-        }
-      ]
+      type: "ListView",
+      limit: TEAM.length,
+      children: statuses.map(buildListViewItem)
     },
-    copy_text: `**ToolsTeamNow**\n\n${sentence}`,
+    copy_text: buildCopyText(statuses),
     name: "tools_team_now"
   };
 }
 
-export function createNowSentence(random = Math.random) {
-  const nickname = pick(NICKNAMES, random);
-  const feeling = pick(FEELINGS, random);
-  const action = pick(ACTIONS, random);
+export function createTeamStatuses(random = Math.random) {
+  const emojiPool = [...EMOJIS];
 
-  return `${nickname}${topicParticle(nickname)} 지금 ${feeling} ${action}.`;
+  return TEAM.map((nickname) => {
+    const emoji = takeRandom(emojiPool, random);
+    const mood = pick(MOODS, random);
+    const action = pick(ACTIONS, random);
+
+    return {
+      nickname,
+      emoji,
+      caption: `지금 ${mood.phrase} ${action}.`,
+      moodLabel: mood.label,
+      moodColor: mood.color
+    };
+  });
+}
+
+export function buildListViewItem(status) {
+  return {
+    type: "ListViewItem",
+    children: [
+      {
+        type: "Box",
+        direction: "row",
+        align: "center",
+        justify: "between",
+        gap: 12,
+        children: [
+          {
+            type: "Box",
+            direction: "row",
+            align: "center",
+            gap: 10,
+            children: [
+              { type: "Text", value: status.emoji, size: "lg" },
+              {
+                type: "Col",
+                gap: 2,
+                children: [
+                  { type: "Title", value: status.nickname, size: "sm", weight: "semibold" },
+                  { type: "Caption", value: status.caption }
+                ]
+              }
+            ]
+          },
+          {
+            type: "Badge",
+            label: status.moodLabel,
+            color: status.moodColor,
+            variant: "soft",
+            pill: true
+          }
+        ]
+      }
+    ]
+  };
+}
+
+export function buildCopyText(statuses) {
+  const lines = statuses.map(
+    (status) => `- **${status.nickname}** ${status.caption} \`${status.moodLabel}\``
+  );
+
+  return `**Tools Team Now**\n\n${lines.join("\n")}`;
 }
 
 function initializeResult(params) {
@@ -192,18 +252,21 @@ function textToolResult(text) {
   };
 }
 
-function topicParticle(text) {
-  const lastCodePoint = Array.from(text).at(-1)?.codePointAt(0);
-  if (!lastCodePoint || lastCodePoint < 0xac00 || lastCodePoint > 0xd7a3) {
-    return "은";
-  }
-
-  return (lastCodePoint - 0xac00) % 28 === 0 ? "는" : "은";
+function takeRandom(pool, random) {
+  const index = clampIndex(Math.floor(random() * pool.length), pool.length);
+  return pool.splice(index, 1)[0];
 }
 
 function pick(values, random) {
-  const index = Math.floor(random() * values.length);
-  return values[index >= values.length ? values.length - 1 : index];
+  return values[clampIndex(Math.floor(random() * values.length), values.length)];
+}
+
+function clampIndex(index, length) {
+  if (index < 0) {
+    return 0;
+  }
+
+  return index >= length ? length - 1 : index;
 }
 
 function isPlainObject(value) {
