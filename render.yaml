@@ -1,0 +1,20 @@
+# Render Blueprint — tools-team-now MCP 테스트 서버
+# 사용법: Render 대시보드 → New → Blueprint → 이 저장소 선택 → Apply
+# 도메인은 *.onrender.com 이라 .dev 차단 사내망에서도 접근 가능합니다.
+services:
+  - type: web
+    name: tools-team-now
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /health
+    envVars:
+      # node-server.js 가 외부 인터페이스에 바인딩하도록 (Dockerfile 기본값과 동일)
+      - key: HOST
+        value: 0.0.0.0
+      # CORS 허용 origin (비워두면 origin 헤더 없는 요청만 허용). 필요 시 대시보드에서 수정.
+      - key: ALLOWED_ORIGINS
+        value: ""
+      # 배포 후 실제 https://<서비스명>.onrender.com 으로 채우면 /openapi.json 의 server url 이 정확해집니다.
+      # - key: API_BASE_URL
+      #   sync: false
