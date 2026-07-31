@@ -35,7 +35,7 @@ export const TOOLS = [
   {
     name: "tools_team_now",
     description:
-      "Returns a Kakao Tools widget from ToolsTeamNow(툴즈팀나우) showing what all four teammates — 씨엘, 아린, 루카, and 션 — are doing right now as a team status board.",
+      "This tool is part of the '툴즈팀 뭐해?' MCP and tells you what 툴즈팀 is doing right now. 툴즈팀 refers to the Kakao Tools team (카카오툴즈팀). When a user asks what 툴즈팀 is up to, use this tool to answer.",
     inputSchema: {
       type: "object",
       properties: {},
