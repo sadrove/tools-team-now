@@ -2,9 +2,9 @@
 
 ToolsTeamNow is a tiny remote MCP server for Kakao Tools testing. It exposes one read-only tool:
 
-- `tools_team_now`: returns a Kakao Tools widget payload that renders a sentence like `씨엘은 지금 아무 생각 없이 모니터를 바라보고 있다.`
+- `tools_team_now`: returns a Kakao Tools `ListView` widget payload — a team status board where all four teammates (`씨엘`, `아린`, `루카`, `션`) each show what they are doing right now, with a signature emoji and a mood badge.
 
-Nicknames are `씨엘`, `아린`, `루카`, and `션`.
+Each render picks a random emoji (from a pool of 20, unique per board), mood, and action for every member, so the board changes every time.
 
 ## Guide Alignment
 
@@ -15,7 +15,8 @@ This server follows the Kakao Tools guide points that matter for this test serve
 - Tool metadata includes `name`, `description`, `inputSchema`, and full `annotations`
 - Widget responses are returned as a JSON string inside MCP `content[0].text`
 - The widget payload is wrapped in a top-level `widget` property and includes `copy_text`
-- The widget payload does not set `widget.status`, because Kakao adds that field
+- The board uses ChatKit core components: `ListView` / `ListViewItem` / `Box` / `Col` / `Text` / `Title` / `Caption` / `Badge`
+- The widget payload does not set `widget.status`, because Kakao adds that field (it renders as the board header)
 
 ## Local Run
 
@@ -57,6 +58,6 @@ curl -s http://127.0.0.1:8787/mcp \
 ## Docker
 
 ```bash
-docker buildx build --platform linux/amd64 -t tools-team-now:0.1.1 --load .
-docker run --rm -p 8787:8787 tools-team-now:0.1.1
+docker buildx build --platform linux/amd64 -t tools-team-now:0.2.0 --load .
+docker run --rm -p 8787:8787 tools-team-now:0.2.0
 ```
