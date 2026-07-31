@@ -1,12 +1,12 @@
 export const PROTOCOL_VERSION = "2025-03-26";
 export const SERVER_NAME = "ToolsTeamNow";
-export const SERVER_VERSION = "0.2.0";
+export const SERVER_VERSION = "0.2.1";
 
 export const TEAM = ["씨엘", "아린", "루카", "션"];
 
 export const EMOJIS = [
-  "✨", "🌙", "⚡", "🌿", "☕", "💻", "📝", "🎧", "🧩", "🔥",
-  "🌈", "🍀", "🪄", "📌", "🖊️", "🧠", "🫖", "🕯️", "🌻", "🐢"
+  "😎", "🤓", "🧐", "🥸", "🤠", "🫡", "🤖", "👽", "👾", "🤡",
+  "🥳", "🤩", "😈", "👻", "🎃", "🤯", "🤪", "😜", "🥴", "🫠"
 ];
 
 export const MOODS = [
@@ -136,7 +136,9 @@ export function createToolsTeamNowWidget(random = Math.random) {
     widget: {
       type: "ListView",
       limit: TEAM.length,
-      children: statuses.map(buildListViewItem)
+      children: statuses.map((status, index) =>
+        buildListViewItem(status, index === statuses.length - 1)
+      )
     },
     copy_text: buildCopyText(statuses),
     name: "tools_team_now"
@@ -161,44 +163,59 @@ export function createTeamStatuses(random = Math.random) {
   });
 }
 
-export function buildListViewItem(status) {
+export function buildListViewItem(status, isLast = false) {
+  const children = [
+    {
+      type: "Box",
+      direction: "row",
+      align: "center",
+      gap: 12,
+      children: [
+        {
+          type: "Box",
+          align: "center",
+          justify: "center",
+          width: 40,
+          height: 40,
+          radius: "full",
+          background: { light: "#F1F2F4", dark: "#2B2B30" },
+          children: [{ type: "Text", value: status.emoji, size: "md" }]
+        },
+        {
+          type: "Col",
+          flex: 1,
+          gap: 2,
+          children: [
+            {
+              type: "Box",
+              direction: "row",
+              align: "center",
+              gap: 6,
+              children: [
+                { type: "Title", value: status.nickname, size: "sm", weight: "semibold" },
+                {
+                  type: "Badge",
+                  label: status.moodLabel,
+                  color: status.moodColor,
+                  variant: "soft",
+                  pill: true
+                }
+              ]
+            },
+            { type: "Caption", value: status.caption }
+          ]
+        }
+      ]
+    }
+  ];
+
+  if (!isLast) {
+    children.push({ type: "Divider", flush: true });
+  }
+
   return {
     type: "ListViewItem",
-    children: [
-      {
-        type: "Box",
-        direction: "row",
-        align: "center",
-        justify: "between",
-        gap: 12,
-        children: [
-          {
-            type: "Box",
-            direction: "row",
-            align: "center",
-            gap: 10,
-            children: [
-              { type: "Text", value: status.emoji, size: "lg" },
-              {
-                type: "Col",
-                gap: 2,
-                children: [
-                  { type: "Title", value: status.nickname, size: "sm", weight: "semibold" },
-                  { type: "Caption", value: status.caption }
-                ]
-              }
-            ]
-          },
-          {
-            type: "Badge",
-            label: status.moodLabel,
-            color: status.moodColor,
-            variant: "soft",
-            pill: true
-          }
-        ]
-      }
-    ]
+    children
   };
 }
 

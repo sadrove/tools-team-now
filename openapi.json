@@ -2,7 +2,7 @@
   "openapi": "3.1.0",
   "info": {
     "title": "ToolsTeamNow API",
-    "version": "0.2.0",
+    "version": "0.2.1",
     "description": "ToolsTeamNow(툴즈팀나우)는 씨엘, 아린, 루카, 션 네 명이 지금 무엇을 하고 있는지 Kakao Tools ListView 위젯 payload로 보여주는 테스트용 API입니다."
   },
   "servers": [
@@ -88,23 +88,37 @@
                                 "type": "Box",
                                 "direction": "row",
                                 "align": "center",
-                                "justify": "between",
                                 "gap": 12,
                                 "children": [
                                   {
                                     "type": "Box",
-                                    "direction": "row",
                                     "align": "center",
-                                    "gap": 10,
+                                    "justify": "center",
+                                    "width": 40,
+                                    "height": 40,
+                                    "radius": "full",
+                                    "background": {
+                                      "light": "#F1F2F4",
+                                      "dark": "#2B2B30"
+                                    },
                                     "children": [
                                       {
                                         "type": "Text",
-                                        "value": "✨",
-                                        "size": "lg"
-                                      },
+                                        "value": "😎",
+                                        "size": "md"
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "type": "Col",
+                                    "flex": 1,
+                                    "gap": 2,
+                                    "children": [
                                       {
-                                        "type": "Col",
-                                        "gap": 2,
+                                        "type": "Box",
+                                        "direction": "row",
+                                        "align": "center",
+                                        "gap": 6,
                                         "children": [
                                           {
                                             "type": "Title",
@@ -113,21 +127,25 @@
                                             "weight": "semibold"
                                           },
                                           {
-                                            "type": "Caption",
-                                            "value": "지금 아무 생각 없이 모니터를 바라보고 있다."
+                                            "type": "Badge",
+                                            "label": "무념",
+                                            "color": "secondary",
+                                            "variant": "soft",
+                                            "pill": true
                                           }
                                         ]
+                                      },
+                                      {
+                                        "type": "Caption",
+                                        "value": "지금 아무 생각 없이 모니터를 바라보고 있다."
                                       }
                                     ]
-                                  },
-                                  {
-                                    "type": "Badge",
-                                    "label": "무념",
-                                    "color": "secondary",
-                                    "variant": "soft",
-                                    "pill": true
                                   }
                                 ]
+                              },
+                              {
+                                "type": "Divider",
+                                "flush": true
                               }
                             ]
                           }

@@ -80,7 +80,7 @@ test("createTeamStatuses gives each teammate a distinct emoji from the pool", ()
   const emojis = statuses.map((s) => s.emoji);
 
   assert.equal(new Set(emojis).size, 4);
-  assert.deepEqual(emojis, ["✨", "🌙", "⚡", "🌿"]);
+  assert.deepEqual(emojis, ["😎", "🤓", "🧐", "🥸"]);
 });
 
 test("tools_team_now returns a Kakao ListView board with one item per member", () => {
@@ -96,14 +96,43 @@ test("tools_team_now returns a Kakao ListView board with one item per member", (
   assert.equal(Object.hasOwn(payload.widget, "status"), false);
 });
 
-test("each board item carries a mood badge", () => {
+test("each board item shows the mood badge right next to the name", () => {
   const payload = createToolsTeamNowWidget(() => 0);
-  const outerBox = payload.widget.children[0].children[0];
-  const badge = outerBox.children[1];
+  const contentBox = payload.widget.children[0].children[0];
+  const col = contentBox.children[1];
+  const nameRow = col.children[0];
 
+  assert.equal(nameRow.direction, "row");
+  assert.equal(nameRow.children[0].type, "Title");
+  assert.equal(nameRow.children[0].value, "씨엘");
+
+  const badge = nameRow.children[1];
   assert.equal(badge.type, "Badge");
   assert.equal(badge.label, "무념");
   assert.equal(badge.color, "secondary");
+});
+
+test("emoji sits in a rounded avatar box with a background", () => {
+  const payload = createToolsTeamNowWidget(() => 0);
+  const avatar = payload.widget.children[0].children[0].children[0];
+
+  assert.ok(avatar.background, "avatar should have a background");
+  assert.equal(avatar.children[0].type, "Text");
+  assert.equal(avatar.children[0].value, "😎");
+});
+
+test("board items are separated by a divider except the last", () => {
+  const payload = createToolsTeamNowWidget(() => 0);
+  const items = payload.widget.children;
+
+  items.forEach((item, index) => {
+    const lastChild = item.children[item.children.length - 1];
+    if (index < items.length - 1) {
+      assert.equal(lastChild.type, "Divider");
+    } else {
+      assert.notEqual(lastChild.type, "Divider");
+    }
+  });
 });
 
 test("copy_text lists every teammate with their mood", () => {

@@ -85,19 +85,28 @@ export function createOpenApiDocument(baseUrl) {
                                   type: "Box",
                                   direction: "row",
                                   align: "center",
-                                  justify: "between",
                                   gap: 12,
                                   children: [
                                     {
                                       type: "Box",
-                                      direction: "row",
                                       align: "center",
-                                      gap: 10,
+                                      justify: "center",
+                                      width: 40,
+                                      height: 40,
+                                      radius: "full",
+                                      background: { light: "#F1F2F4", dark: "#2B2B30" },
+                                      children: [{ type: "Text", value: "😎", size: "md" }]
+                                    },
+                                    {
+                                      type: "Col",
+                                      flex: 1,
+                                      gap: 2,
                                       children: [
-                                        { type: "Text", value: "✨", size: "lg" },
                                         {
-                                          type: "Col",
-                                          gap: 2,
+                                          type: "Box",
+                                          direction: "row",
+                                          align: "center",
+                                          gap: 6,
                                           children: [
                                             {
                                               type: "Title",
@@ -106,22 +115,23 @@ export function createOpenApiDocument(baseUrl) {
                                               weight: "semibold"
                                             },
                                             {
-                                              type: "Caption",
-                                              value: "지금 아무 생각 없이 모니터를 바라보고 있다."
+                                              type: "Badge",
+                                              label: "무념",
+                                              color: "secondary",
+                                              variant: "soft",
+                                              pill: true
                                             }
                                           ]
+                                        },
+                                        {
+                                          type: "Caption",
+                                          value: "지금 아무 생각 없이 모니터를 바라보고 있다."
                                         }
                                       ]
-                                    },
-                                    {
-                                      type: "Badge",
-                                      label: "무념",
-                                      color: "secondary",
-                                      variant: "soft",
-                                      pill: true
                                     }
                                   ]
-                                }
+                                },
+                                { type: "Divider", flush: true }
                               ]
                             }
                           ]
