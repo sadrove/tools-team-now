@@ -3,8 +3,9 @@ import test from "node:test";
 import {
   PROTOCOL_VERSION,
   TOOLS,
-  createNowSentence,
+  createTeamStatuses,
   createToolsTeamNowWidget,
+  buildCopyText,
   handleJsonRpcPayload,
   toolsTeamNowTool
 } from "../src/mcp.js";
@@ -60,48 +61,59 @@ test("tools/list exposes Kakao-required tool metadata", () => {
   assert.deepEqual(response.result.tools, TOOLS);
 });
 
-test("tools_team_now returns a Kakao widget payload as text content", () => {
+test("createTeamStatuses covers the whole team in fixed order, deterministically", () => {
+  const statuses = createTeamStatuses(() => 0);
+
+  assert.deepEqual(
+    statuses.map((s) => s.nickname),
+    ["씨엘", "아린", "루카", "션"]
+  );
+  for (const s of statuses) {
+    assert.equal(s.caption, "지금 아무 생각 없이 모니터를 바라보고 있다.");
+    assert.equal(s.moodLabel, "무념");
+    assert.equal(s.moodColor, "secondary");
+  }
+});
+
+test("createTeamStatuses gives each teammate a distinct emoji from the pool", () => {
+  const statuses = createTeamStatuses(() => 0);
+  const emojis = statuses.map((s) => s.emoji);
+
+  assert.equal(new Set(emojis).size, 4);
+  assert.deepEqual(emojis, ["✨", "🌙", "⚡", "🌿"]);
+});
+
+test("tools_team_now returns a Kakao ListView board with one item per member", () => {
   const response = toolsTeamNowTool(() => 0);
   const payload = JSON.parse(response.content[0].text);
 
   assert.equal(payload.name, "tools_team_now");
-  assert.equal(payload.widget.type, "Card");
-  assert.equal(payload.widget.children[0].type, "Text");
-  assert.equal(
-    payload.widget.children[0].value,
-    "씨엘은 지금 아무 생각 없이 모니터를 바라보고 있다."
-  );
-  assert.ok(payload.copy_text.includes(payload.widget.children[0].value));
+  assert.equal(payload.widget.type, "ListView");
+  assert.equal(payload.widget.children.length, 4);
+  for (const item of payload.widget.children) {
+    assert.equal(item.type, "ListViewItem");
+  }
   assert.equal(Object.hasOwn(payload.widget, "status"), false);
 });
 
-test("tools_team_now uses a natural topic particle for nicknames", () => {
-  const randomValues = [0.51, 0, 0];
-  const random = () => randomValues.shift() ?? 0;
-
-  assert.equal(
-    createNowSentence(random),
-    "루카는 지금 아무 생각 없이 모니터를 바라보고 있다."
-  );
-});
-
-test("tools_team_now includes 션 as a team member", () => {
-  const randomValues = [0.99, 0, 0];
-  const random = () => randomValues.shift() ?? 0;
-
-  assert.equal(
-    createNowSentence(random),
-    "션은 지금 아무 생각 없이 모니터를 바라보고 있다."
-  );
-});
-
-test("REST API widget payload matches the Kakao widget shape", () => {
+test("each board item carries a mood badge", () => {
   const payload = createToolsTeamNowWidget(() => 0);
+  const outerBox = payload.widget.children[0].children[0];
+  const badge = outerBox.children[1];
 
-  assert.equal(payload.name, "tools_team_now");
-  assert.equal(payload.widget.type, "Card");
-  assert.equal(payload.widget.children[0].value, "씨엘은 지금 아무 생각 없이 모니터를 바라보고 있다.");
-  assert.ok(payload.copy_text.includes(payload.widget.children[0].value));
+  assert.equal(badge.type, "Badge");
+  assert.equal(badge.label, "무념");
+  assert.equal(badge.color, "secondary");
+});
+
+test("copy_text lists every teammate with their mood", () => {
+  const copyText = buildCopyText(createTeamStatuses(() => 0));
+
+  assert.ok(copyText.startsWith("**Tools Team Now**"));
+  for (const nickname of ["씨엘", "아린", "루카", "션"]) {
+    assert.ok(copyText.includes(`**${nickname}**`));
+  }
+  assert.ok(copyText.includes("`무념`"));
 });
 
 test("OpenAPI document exposes the REST endpoint for PlayMCP Builder", () => {
@@ -153,7 +165,7 @@ test("worker adapter serves REST API and OpenAPI endpoints", async () => {
 
   assert.equal(apiResponse.status, 200);
   assert.equal(apiPayload.name, "tools_team_now");
-  assert.equal(apiPayload.widget.type, "Card");
+  assert.equal(apiPayload.widget.type, "ListView");
 
   const openApiResponse = await worker.fetch(
     new Request("https://example.com/openapi.json")
