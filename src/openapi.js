@@ -76,7 +76,7 @@ export function createOpenApiDocument(baseUrl) {
                             {
                               type: "Row",
                               align: "center",
-                              gap: 6,
+                              gap: 4,
                               children: [
                                 {
                                   type: "Box",
@@ -100,7 +100,7 @@ export function createOpenApiDocument(baseUrl) {
                                         {
                                           type: "Title",
                                           value: "씨엘",
-                                          size: "md",
+                                          size: "lg",
                                           weight: "semibold"
                                         },
                                         {
@@ -115,13 +115,13 @@ export function createOpenApiDocument(baseUrl) {
                                     {
                                       type: "Caption",
                                       value: "지금 아무 생각 없이 모니터를 바라보고 있다.",
-                                      size: "md"
+                                      size: "lg"
                                     }
                                   ]
                                 }
                               ]
                             },
-                            { type: "Divider", spacing: 4 }
+                            { type: "Divider" }
                           ]
                         },
                         copy_text:
