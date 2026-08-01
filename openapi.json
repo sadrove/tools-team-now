@@ -2,7 +2,7 @@
   "openapi": "3.1.0",
   "info": {
     "title": "ToolsTeamNow API",
-    "version": "0.2.4",
+    "version": "0.2.5",
     "description": "ToolsTeamNow(툴즈팀나우)는 씨엘, 아린, 루카, 션 네 명이 지금 무엇을 하고 있는지 Kakao Tools ListView 위젯 payload로 보여주는 테스트용 API입니다."
   },
   "servers": [
@@ -94,7 +94,7 @@
                                   {
                                     "type": "Text",
                                     "value": "😎",
-                                    "size": "md"
+                                    "size": "lg"
                                   }
                                 ]
                               },
@@ -111,7 +111,7 @@
                                       {
                                         "type": "Title",
                                         "value": "씨엘",
-                                        "size": "lg",
+                                        "size": "md",
                                         "weight": "semibold"
                                       },
                                       {

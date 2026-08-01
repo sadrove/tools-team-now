@@ -1,6 +1,6 @@
 export const PROTOCOL_VERSION = "2025-03-26";
 export const SERVER_NAME = "ToolsTeamNow";
-export const SERVER_VERSION = "0.2.4";
+export const SERVER_VERSION = "0.2.5";
 
 export const TEAM = ["씨엘", "아린", "루카", "션"];
 
@@ -181,7 +181,7 @@ export function buildMemberRow(status) {
         size: 40,
         radius: "full",
         background: { light: "#F1F2F4", dark: "#2B2B30" },
-        children: [{ type: "Text", value: status.emoji, size: "md" }]
+        children: [{ type: "Text", value: status.emoji, size: "lg" }]
       },
       {
         type: "Col",
@@ -193,7 +193,7 @@ export function buildMemberRow(status) {
             align: "center",
             gap: 6,
             children: [
-              { type: "Title", value: status.nickname, size: "lg", weight: "semibold" },
+              { type: "Title", value: status.nickname, size: "md", weight: "semibold" },
               {
                 type: "Badge",
                 label: status.moodLabel,

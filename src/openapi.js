@@ -85,7 +85,7 @@ export function createOpenApiDocument(baseUrl) {
                                   size: 40,
                                   radius: "full",
                                   background: { light: "#F1F2F4", dark: "#2B2B30" },
-                                  children: [{ type: "Text", value: "😎", size: "md" }]
+                                  children: [{ type: "Text", value: "😎", size: "lg" }]
                                 },
                                 {
                                   type: "Col",
@@ -100,7 +100,7 @@ export function createOpenApiDocument(baseUrl) {
                                         {
                                           type: "Title",
                                           value: "씨엘",
-                                          size: "lg",
+                                          size: "md",
                                           weight: "semibold"
                                         },
                                         {
