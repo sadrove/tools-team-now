@@ -76,7 +76,7 @@ export function createOpenApiDocument(baseUrl) {
                             {
                               type: "Row",
                               align: "center",
-                              gap: 12,
+                              gap: 6,
                               children: [
                                 {
                                   type: "Box",
@@ -100,7 +100,7 @@ export function createOpenApiDocument(baseUrl) {
                                         {
                                           type: "Title",
                                           value: "씨엘",
-                                          size: "sm",
+                                          size: "md",
                                           weight: "semibold"
                                         },
                                         {
@@ -114,7 +114,8 @@ export function createOpenApiDocument(baseUrl) {
                                     },
                                     {
                                       type: "Caption",
-                                      value: "지금 아무 생각 없이 모니터를 바라보고 있다."
+                                      value: "지금 아무 생각 없이 모니터를 바라보고 있다.",
+                                      size: "md"
                                     }
                                   ]
                                 }
