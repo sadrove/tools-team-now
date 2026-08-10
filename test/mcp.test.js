@@ -125,13 +125,23 @@ test("emoji sits in a fixed rounded avatar box with a background", () => {
   assert.equal(avatar.children[0].value, "😎");
 });
 
-test("member rows are separated by dividers and do not end on one", () => {
+test("member rows are separated by dividers, plus one before the button", () => {
   const payload = createToolsTeamNowWidget(() => 0);
   const dividers = payload.widget.children.filter((child) => child.type === "Divider");
-  assert.equal(dividers.length, 3);
+  assert.equal(dividers.length, 4);
+});
 
+test("widget ends with the coffee button linking to the sandbox prompt", () => {
+  const payload = createToolsTeamNowWidget(() => 0);
   const lastChild = payload.widget.children[payload.widget.children.length - 1];
-  assert.equal(lastChild.type, "Row");
+
+  assert.equal(lastChild.type, "Button");
+  assert.equal(lastChild.label, "오늘 커피 쏘기 랜덤 1명 지정");
+
+  const url = lastChild.onClickAction.payload.target.url;
+  assert.ok(url.startsWith("https://sandbox-chatgpt.kakao.com"));
+  assert.ok(url.includes("tool_choice=true"));
+  assert.ok(url.includes("prompt="));
 });
 
 test("copy_text lists every teammate with their mood", () => {

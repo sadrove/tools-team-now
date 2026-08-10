@@ -121,7 +121,20 @@ export function createOpenApiDocument(baseUrl) {
                                 }
                               ]
                             },
-                            { type: "Divider" }
+                            { type: "Divider" },
+                            {
+                              type: "Button",
+                              label: "오늘 커피 쏘기 랜덤 1명 지정",
+                              style: "primary",
+                              block: true,
+                              onClickAction: {
+                                payload: {
+                                  target: {
+                                    url: "https://sandbox-chatgpt.kakao.com?t_src=kakaotalk&t_ch=cieltest&tool_choice=true&prompt=..."
+                                  }
+                                }
+                              }
+                            }
                           ]
                         },
                         copy_text:

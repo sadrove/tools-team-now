@@ -1,6 +1,6 @@
 {
   "name": "tools-team-now-mcp",
-  "version": "0.2.5",
+  "version": "0.3.0",
   "description": "ToolsTeamNow MCP server for Kakao Tools testing.",
   "type": "module",
   "private": true,
