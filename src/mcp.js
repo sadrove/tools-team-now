@@ -1,6 +1,6 @@
 export const PROTOCOL_VERSION = "2025-03-26";
 export const SERVER_NAME = "ToolsTeamNow";
-export const SERVER_VERSION = "0.3.0";
+export const SERVER_VERSION = "0.3.1";
 
 export const TEAM = ["씨엘", "아린", "루카", "션"];
 
@@ -39,7 +39,7 @@ export const TOOLS = [
   {
     name: "tools_team_now",
     description:
-      "This tool is part of the '툴즈팀 뭐해?' MCP and tells you what 툴즈팀 is doing right now. 툴즈팀 refers to the Kakao Tools team (카카오툴즈팀). When a user asks what 툴즈팀 is up to, use this tool to answer.",
+      "This tool belongs to the ToolsTeamNow(툴즈팀 뭐함?) MCP and reports what 툴즈팀, the Kakao Tools team(카카오툴즈팀), is doing right now. When a user asks what 툴즈팀(ToolsTeamNow) is up to, use this tool to answer.",
     inputSchema: {
       type: "object",
       properties: {},
