@@ -134,17 +134,6 @@ export function createOpenApiDocument(baseUrl) {
                             { type: "Divider" },
                             {
                               type: "Button",
-                              label: "오늘 커피 쏘기 랜덤 1명 지정",
-                              onClickAction: {
-                                payload: {
-                                  target: {
-                                    url: "https://sandbox-chatgpt.kakao.com?t_src=kakaotalk&t_ch=cieltest&tool_choice=true&prompt=..."
-                                  }
-                                }
-                              }
-                            },
-                            {
-                              type: "Button",
                               label: "엘튼, 써니는 뭐하고 있음?",
                               onClickAction: {
                                 payload: {

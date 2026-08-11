@@ -133,16 +133,13 @@ test("member rows are separated by dividers, plus one before the button", () => 
   assert.equal(dividers.length, 4);
 });
 
-test("widget includes the coffee button linking to the sandbox prompt", () => {
+test("widget currently contains only the sendUserMessage button (coffee button removed)", () => {
   const payload = createToolsTeamNowWidget(() => 0);
   const buttons = payload.widget.children.filter((child) => child.type === "Button");
-  const coffee = buttons.find((b) => b.label === "오늘 커피 쏘기 랜덤 1명 지정");
 
-  assert.ok(coffee, "coffee button should be present");
-  const url = coffee.onClickAction.payload.target.url;
-  assert.ok(url.startsWith("https://sandbox-chatgpt.kakao.com"));
-  assert.ok(url.includes("tool_choice=true"));
-  assert.ok(url.includes("prompt="));
+  assert.equal(buttons.length, 1);
+  assert.equal(buttons[0].label, "엘튼, 써니는 뭐하고 있음?");
+  assert.equal(buttons[0].onClickAction.payload.target.type, "sendUserMessage");
 });
 
 test("widget ends with the team-ask button using a text-only sendUserMessage action", () => {
