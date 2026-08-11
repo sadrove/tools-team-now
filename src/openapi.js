@@ -22,7 +22,17 @@ export function createOpenApiDocument(baseUrl) {
           operationId: "tools_team_now",
           summary: "Get current ToolsTeamNow status",
           description:
-            "This tool belongs to the ToolsTeamNow(툴즈팀 뭐함?) MCP and reports what 툴즈팀, the Kakao Tools team(카카오툴즈팀), is doing right now. When a user asks what 툴즈팀(ToolsTeamNow) is up to, use this tool to answer.",
+            "This tool belongs to the ToolsTeamNow(툴즈팀 뭐함?) MCP and reports what 툴즈팀, the Kakao Tools team(카카오툴즈팀), is doing right now. It can optionally take a `members` list of teammate names to show a custom set of people; without it, the default team (씨엘, 아린, 루카, 션) is shown. When a user asks what 툴즈팀(ToolsTeamNow) — or specific named teammates — are up to, use this tool to answer.",
+          parameters: [
+            {
+              name: "members",
+              in: "query",
+              required: false,
+              description:
+                "Comma-separated teammate names (e.g. 엘튼,써니). If omitted, the default team (씨엘, 아린, 루카, 션) is used.",
+              schema: { type: "string" }
+            }
+          ],
           responses: {
             "200": {
               description: "Current ToolsTeamNow widget payload",
@@ -125,8 +135,6 @@ export function createOpenApiDocument(baseUrl) {
                             {
                               type: "Button",
                               label: "오늘 커피 쏘기 랜덤 1명 지정",
-                              style: "primary",
-                              block: true,
                               onClickAction: {
                                 payload: {
                                   target: {
@@ -138,8 +146,6 @@ export function createOpenApiDocument(baseUrl) {
                             {
                               type: "Button",
                               label: "엘튼, 써니는 뭐하고 있음?",
-                              style: "secondary",
-                              block: true,
                               onClickAction: {
                                 payload: {
                                   target: {

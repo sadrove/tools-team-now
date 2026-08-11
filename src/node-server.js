@@ -3,6 +3,7 @@ import { URL } from "node:url";
 import {
   createToolsTeamNowWidget,
   handleJsonRpcPayload,
+  parseMembersParam,
   SERVER_NAME,
   SERVER_VERSION
 } from "./mcp.js";
@@ -50,7 +51,8 @@ const server = http.createServer(async (req, res) => {
   }
 
   if (req.method === "GET" && url.pathname === "/tools-team-now") {
-    return sendJson(res, 200, createToolsTeamNowWidget(), corsHeaders);
+    const team = parseMembersParam(url.searchParams.get("members"));
+    return sendJson(res, 200, createToolsTeamNowWidget(undefined, team), corsHeaders);
   }
 
   if (req.method === "GET" && url.pathname === "/openapi.json") {

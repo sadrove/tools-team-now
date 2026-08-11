@@ -1,6 +1,6 @@
 export const PROTOCOL_VERSION = "2025-03-26";
 export const SERVER_NAME = "ToolsTeamNow";
-export const SERVER_VERSION = "0.4.0";
+export const SERVER_VERSION = "0.5.1";
 
 export const TEAM = ["씨엘", "아린", "루카", "션"];
 
@@ -43,10 +43,17 @@ export const TOOLS = [
   {
     name: "tools_team_now",
     description:
-      "This tool belongs to the ToolsTeamNow(툴즈팀 뭐함?) MCP and reports what 툴즈팀, the Kakao Tools team(카카오툴즈팀), is doing right now. When a user asks what 툴즈팀(ToolsTeamNow) is up to, use this tool to answer.",
+      "This tool belongs to the ToolsTeamNow(툴즈팀 뭐함?) MCP and reports what 툴즈팀, the Kakao Tools team(카카오툴즈팀), is doing right now. It can optionally take a `members` list of teammate names to show a custom set of people; without it, the default team (씨엘, 아린, 루카, 션) is shown. When a user asks what 툴즈팀(ToolsTeamNow) — or specific named teammates — are up to, use this tool to answer.",
     inputSchema: {
       type: "object",
-      properties: {},
+      properties: {
+        members: {
+          type: "array",
+          items: { type: "string" },
+          description:
+            "Optional list of teammate names to show. If omitted or empty, the default team (씨엘, 아린, 루카, 션) is used."
+        }
+      },
       additionalProperties: false
     },
     annotations: {
@@ -127,18 +134,18 @@ export function callTool(params) {
 
   switch (params.name) {
     case "tools_team_now":
-      return toolsTeamNowTool();
+      return toolsTeamNowTool(Math.random, extractTeam(params.arguments));
     default:
       throw new RpcException(-32602, `Unknown tool: ${params.name}`);
   }
 }
 
-export function toolsTeamNowTool(random = Math.random) {
-  return textToolResult(JSON.stringify(createToolsTeamNowWidget(random)));
+export function toolsTeamNowTool(random = Math.random, team = TEAM) {
+  return textToolResult(JSON.stringify(createToolsTeamNowWidget(random, team)));
 }
 
-export function createToolsTeamNowWidget(random = Math.random) {
-  const statuses = createTeamStatuses(random);
+export function createToolsTeamNowWidget(random = Math.random, team = TEAM) {
+  const statuses = createTeamStatuses(random, team);
   const children = [];
 
   statuses.forEach((status, index) => {
@@ -166,8 +173,6 @@ export function buildCoffeeButton() {
   return {
     type: "Button",
     label: COFFEE_BUTTON_LABEL,
-    style: "primary",
-    block: true,
     onClickAction: {
       payload: {
         target: {
@@ -182,8 +187,6 @@ export function buildTeamAskButton() {
   return {
     type: "Button",
     label: ASK_BUTTON_LABEL,
-    style: "secondary",
-    block: true,
     onClickAction: {
       payload: {
         target: {
@@ -199,10 +202,10 @@ export function buildTeamAskButton() {
   };
 }
 
-export function createTeamStatuses(random = Math.random) {
+export function createTeamStatuses(random = Math.random, team = TEAM) {
   const emojiPool = [...EMOJIS];
 
-  return TEAM.map((nickname) => {
+  return team.map((nickname) => {
     const emoji = takeRandom(emojiPool, random);
     const mood = pick(MOODS, random);
     const action = pick(ACTIONS, random);
@@ -309,7 +312,36 @@ function textToolResult(text) {
   };
 }
 
+export function extractTeam(args) {
+  if (isPlainObject(args) && Array.isArray(args.members)) {
+    return normalizeTeam(args.members);
+  }
+
+  return TEAM;
+}
+
+export function parseMembersParam(raw) {
+  if (typeof raw !== "string" || raw.length === 0) {
+    return TEAM;
+  }
+
+  return normalizeTeam(raw.split(","));
+}
+
+function normalizeTeam(list) {
+  const names = list
+    .filter((name) => typeof name === "string")
+    .map((name) => name.trim())
+    .filter((name) => name.length > 0);
+
+  return names.length > 0 ? names : TEAM;
+}
+
 function takeRandom(pool, random) {
+  if (pool.length === 0) {
+    return pick(EMOJIS, random);
+  }
+
   const index = clampIndex(Math.floor(random() * pool.length), pool.length);
   return pool.splice(index, 1)[0];
 }

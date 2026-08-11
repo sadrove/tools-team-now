@@ -1,6 +1,7 @@
 import {
   createToolsTeamNowWidget,
   handleJsonRpcPayload,
+  parseMembersParam,
   SERVER_NAME,
   SERVER_VERSION
 } from "./mcp.js";
@@ -43,7 +44,8 @@ export default {
     }
 
     if (request.method === "GET" && url.pathname === "/tools-team-now") {
-      return json(createToolsTeamNowWidget(), 200, corsHeaders);
+      const team = parseMembersParam(url.searchParams.get("members"));
+      return json(createToolsTeamNowWidget(undefined, team), 200, corsHeaders);
     }
 
     if (request.method === "GET" && url.pathname === "/openapi.json") {

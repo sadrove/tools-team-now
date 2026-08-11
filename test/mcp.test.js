@@ -6,6 +6,7 @@ import {
   createTeamStatuses,
   createToolsTeamNowWidget,
   buildCopyText,
+  extractTeam,
   handleJsonRpcPayload,
   toolsTeamNowTool
 } from "../src/mcp.js";
@@ -156,6 +157,43 @@ test("widget ends with the team-ask button using a sendUserMessage action", () =
   assert.equal(target.properties.newThread, false);
   assert.ok(target.properties.text.includes("엘튼"));
   assert.ok(target.properties.text.includes("써니"));
+});
+
+test("tool inputSchema exposes an optional members array", () => {
+  const members = TOOLS[0].inputSchema.properties.members;
+  assert.equal(members.type, "array");
+  assert.equal(members.items.type, "string");
+  assert.equal(TOOLS[0].inputSchema.additionalProperties, false);
+});
+
+test("createToolsTeamNowWidget renders a custom members list in order", () => {
+  const payload = createToolsTeamNowWidget(() => 0, ["엘튼", "써니"]);
+  const rows = payload.widget.children.filter((child) => child.type === "Row");
+
+  assert.equal(rows.length, 2);
+  assert.deepEqual(
+    rows.map((row) => row.children[1].children[0].children[0].value),
+    ["엘튼", "써니"]
+  );
+});
+
+test("extractTeam reads members from arguments and falls back to the default team", () => {
+  assert.deepEqual(extractTeam({ members: ["엘튼", " 써니 ", ""] }), ["엘튼", "써니"]);
+  assert.deepEqual(extractTeam({}), ["씨엘", "아린", "루카", "션"]);
+  assert.deepEqual(extractTeam({ members: [] }), ["씨엘", "아린", "루카", "션"]);
+});
+
+test("calling the tool with members arguments renders those members", () => {
+  const response = handleJsonRpcPayload({
+    jsonrpc: "2.0",
+    id: 42,
+    method: "tools/call",
+    params: { name: "tools_team_now", arguments: { members: ["엘튼", "써니"] } }
+  });
+  const payload = JSON.parse(response.result.content[0].text);
+  const rows = payload.widget.children.filter((child) => child.type === "Row");
+
+  assert.equal(rows.length, 2);
 });
 
 test("copy_text lists every teammate with their mood", () => {
