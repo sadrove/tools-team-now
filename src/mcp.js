@@ -1,6 +1,6 @@
 export const PROTOCOL_VERSION = "2025-03-26";
 export const SERVER_NAME = "ToolsTeamNow";
-export const SERVER_VERSION = "0.5.2";
+export const SERVER_VERSION = "0.5.3";
 
 export const TEAM = ["씨엘", "아린", "루카", "션"];
 
@@ -157,9 +157,7 @@ export function createToolsTeamNowWidget(random = Math.random, team = TEAM) {
 
   children.push({ type: "Divider" });
   children.push(buildCoffeeButton());
-  // NOTE: sendUserMessage 버튼은 위젯 폴백 원인 격리를 위해 임시로 제외.
-  // 카카오에서 sendUserMessage 지원이 확인되면 아래 줄을 되살린다.
-  // children.push(buildTeamAskButton());
+  children.push(buildTeamAskButton());
 
   return {
     widget: {
@@ -194,9 +192,7 @@ export function buildTeamAskButton() {
         target: {
           type: "sendUserMessage",
           properties: {
-            text: ASK_BUTTON_TEXT,
-            toolChoice: true,
-            newThread: false
+            text: ASK_BUTTON_TEXT
           }
         }
       }

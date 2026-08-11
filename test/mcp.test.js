@@ -145,26 +145,26 @@ test("widget includes the coffee button linking to the sandbox prompt", () => {
   assert.ok(url.includes("prompt="));
 });
 
-test("buildTeamAskButton produces a valid sendUserMessage action", () => {
-  const button = buildTeamAskButton();
+test("widget ends with the team-ask button using a text-only sendUserMessage action", () => {
+  const payload = createToolsTeamNowWidget(() => 0);
+  const lastChild = payload.widget.children[payload.widget.children.length - 1];
 
-  assert.equal(button.type, "Button");
-  assert.equal(button.label, "엘튼, 써니는 뭐하고 있음?");
+  assert.equal(lastChild.type, "Button");
+  assert.equal(lastChild.label, "엘튼, 써니는 뭐하고 있음?");
 
-  const target = button.onClickAction.payload.target;
+  const target = lastChild.onClickAction.payload.target;
   assert.equal(target.type, "sendUserMessage");
-  assert.equal(target.properties.toolChoice, true);
-  assert.equal(target.properties.newThread, false);
+  assert.deepEqual(Object.keys(target.properties), ["text"]);
   assert.ok(target.properties.text.includes("엘튼"));
   assert.ok(target.properties.text.includes("써니"));
 });
 
-test("widget currently excludes the sendUserMessage button (isolation)", () => {
-  const payload = createToolsTeamNowWidget(() => 0);
-  const buttons = payload.widget.children.filter((child) => child.type === "Button");
+test("buildTeamAskButton sends only a text property (no toolChoice/newThread)", () => {
+  const props = buildTeamAskButton().onClickAction.payload.target.properties;
 
-  assert.equal(buttons.length, 1);
-  assert.equal(buttons[0].label, "오늘 커피 쏘기 랜덤 1명 지정");
+  assert.deepEqual(Object.keys(props), ["text"]);
+  assert.equal(Object.hasOwn(props, "toolChoice"), false);
+  assert.equal(Object.hasOwn(props, "newThread"), false);
 });
 
 test("tool inputSchema exposes an optional members array", () => {
