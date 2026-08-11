@@ -1,6 +1,6 @@
 export const PROTOCOL_VERSION = "2025-03-26";
 export const SERVER_NAME = "ToolsTeamNow";
-export const SERVER_VERSION = "0.5.4";
+export const SERVER_VERSION = "0.6.0";
 
 export const TEAM = ["씨엘", "아린", "루카", "션"];
 
@@ -141,7 +141,10 @@ export function callTool(params) {
 }
 
 export function toolsTeamNowTool(random = Math.random, team = TEAM) {
-  return textToolResult(JSON.stringify(createToolsTeamNowWidget(random, team)));
+  // 실험: 카카오 래퍼(widget/copy_text/name) 없이 순수 ChatKit 위젯 노드만 반환.
+  // 카카오 위젯 검증 도구가 순수 노드를 기대하는 것에 맞춘 테스트.
+  const { widget } = createToolsTeamNowWidget(random, team);
+  return textToolResult(JSON.stringify(widget));
 }
 
 export function createToolsTeamNowWidget(random = Math.random, team = TEAM) {
