@@ -2,7 +2,7 @@
   "openapi": "3.1.0",
   "info": {
     "title": "ToolsTeamNow API",
-    "version": "0.3.1",
+    "version": "0.4.0",
     "description": "ToolsTeamNow(툴즈팀나우)는 씨엘, 아린, 루카, 션 네 명이 지금 무엇을 하고 있는지 Kakao Tools ListView 위젯 payload로 보여주는 테스트용 API입니다."
   },
   "servers": [
@@ -144,6 +144,24 @@
                               "payload": {
                                 "target": {
                                   "url": "https://sandbox-chatgpt.kakao.com?t_src=kakaotalk&t_ch=cieltest&tool_choice=true&prompt=..."
+                                }
+                              }
+                            }
+                          },
+                          {
+                            "type": "Button",
+                            "label": "엘튼, 써니는 뭐하고 있음?",
+                            "style": "secondary",
+                            "block": true,
+                            "onClickAction": {
+                              "payload": {
+                                "target": {
+                                  "type": "sendUserMessage",
+                                  "properties": {
+                                    "text": "방금 사용한 툴을 이용해서 \"엘튼\", \"써니\"를 팀 사람으로 입력해서 뭐하고 있는지 알려줘",
+                                    "toolChoice": true,
+                                    "newThread": false
+                                  }
                                 }
                               }
                             }

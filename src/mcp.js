@@ -1,6 +1,6 @@
 export const PROTOCOL_VERSION = "2025-03-26";
 export const SERVER_NAME = "ToolsTeamNow";
-export const SERVER_VERSION = "0.3.1";
+export const SERVER_VERSION = "0.4.0";
 
 export const TEAM = ["씨엘", "아린", "루카", "션"];
 
@@ -23,6 +23,10 @@ export const MOODS = [
 export const COFFEE_BUTTON_LABEL = "오늘 커피 쏘기 랜덤 1명 지정";
 export const COFFEE_BUTTON_URL =
   "https://sandbox-chatgpt.kakao.com?t_src=kakaotalk&t_ch=cieltest&tool_choice=true&prompt=%EB%B0%A9%EA%B8%88%20%27%ED%88%B4%EC%A6%88%ED%8C%80%20%EB%AD%90%ED%95%B4%3F%27%20%ED%88%B4%20%EC%9D%91%EB%8B%B5%EC%9C%BC%EB%A1%9C%20%EB%82%98%EC%99%94%EB%8D%98%20%EC%82%AC%EB%9E%8C%20%EC%A4%91%EC%97%90%EC%84%9C%201%EB%AA%85%EC%9D%84%20%EB%9E%9C%EB%8D%A4%EC%9C%BC%EB%A1%9C%20%EB%BD%91%EC%95%84%EC%84%9C%20%EC%95%8C%EB%A0%A4%EC%A4%98.%20%EA%B7%B8%20%EC%82%AC%EB%9E%8C%EC%9D%B4%20%EC%BB%A4%ED%94%BC%EB%A5%BC%20%EC%8F%A0%EA%BA%BC%EC%95%BC";
+
+export const ASK_BUTTON_LABEL = "엘튼, 써니는 뭐하고 있음?";
+export const ASK_BUTTON_TEXT =
+  '방금 사용한 툴을 이용해서 "엘튼", "써니"를 팀 사람으로 입력해서 뭐하고 있는지 알려줘';
 
 const ACTIONS = [
   "모니터를 바라보고 있다",
@@ -146,6 +150,7 @@ export function createToolsTeamNowWidget(random = Math.random) {
 
   children.push({ type: "Divider" });
   children.push(buildCoffeeButton());
+  children.push(buildTeamAskButton());
 
   return {
     widget: {
@@ -167,6 +172,27 @@ export function buildCoffeeButton() {
       payload: {
         target: {
           url: COFFEE_BUTTON_URL
+        }
+      }
+    }
+  };
+}
+
+export function buildTeamAskButton() {
+  return {
+    type: "Button",
+    label: ASK_BUTTON_LABEL,
+    style: "secondary",
+    block: true,
+    onClickAction: {
+      payload: {
+        target: {
+          type: "sendUserMessage",
+          properties: {
+            text: ASK_BUTTON_TEXT,
+            toolChoice: true,
+            newThread: false
+          }
         }
       }
     }
