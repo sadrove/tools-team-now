@@ -142,22 +142,6 @@ export function createOpenApiDocument(baseUrl) {
                                   }
                                 }
                               }
-                            },
-                            {
-                              type: "Button",
-                              label: "엘튼, 써니는 뭐하고 있음?",
-                              onClickAction: {
-                                payload: {
-                                  target: {
-                                    type: "sendUserMessage",
-                                    properties: {
-                                      text: '방금 사용한 툴을 이용해서 "엘튼", "써니"를 팀 사람으로 입력해서 뭐하고 있는지 알려줘',
-                                      toolChoice: true,
-                                      newThread: false
-                                    }
-                                  }
-                                }
-                              }
                             }
                           ]
                         },

@@ -6,6 +6,7 @@ import {
   createTeamStatuses,
   createToolsTeamNowWidget,
   buildCopyText,
+  buildTeamAskButton,
   extractTeam,
   handleJsonRpcPayload,
   toolsTeamNowTool
@@ -144,19 +145,26 @@ test("widget includes the coffee button linking to the sandbox prompt", () => {
   assert.ok(url.includes("prompt="));
 });
 
-test("widget ends with the team-ask button using a sendUserMessage action", () => {
-  const payload = createToolsTeamNowWidget(() => 0);
-  const lastChild = payload.widget.children[payload.widget.children.length - 1];
+test("buildTeamAskButton produces a valid sendUserMessage action", () => {
+  const button = buildTeamAskButton();
 
-  assert.equal(lastChild.type, "Button");
-  assert.equal(lastChild.label, "엘튼, 써니는 뭐하고 있음?");
+  assert.equal(button.type, "Button");
+  assert.equal(button.label, "엘튼, 써니는 뭐하고 있음?");
 
-  const target = lastChild.onClickAction.payload.target;
+  const target = button.onClickAction.payload.target;
   assert.equal(target.type, "sendUserMessage");
   assert.equal(target.properties.toolChoice, true);
   assert.equal(target.properties.newThread, false);
   assert.ok(target.properties.text.includes("엘튼"));
   assert.ok(target.properties.text.includes("써니"));
+});
+
+test("widget currently excludes the sendUserMessage button (isolation)", () => {
+  const payload = createToolsTeamNowWidget(() => 0);
+  const buttons = payload.widget.children.filter((child) => child.type === "Button");
+
+  assert.equal(buttons.length, 1);
+  assert.equal(buttons[0].label, "오늘 커피 쏘기 랜덤 1명 지정");
 });
 
 test("tool inputSchema exposes an optional members array", () => {
