@@ -85,16 +85,16 @@ test("createTeamStatuses gives each teammate a distinct emoji from the pool", ()
   assert.deepEqual(emojis, ["😎", "🤓", "🧐", "🥸"]);
 });
 
-test("tools_team_now returns a bare Card widget node (no widget/copy_text/name wrapper)", () => {
+test("tools_team_now returns a Kakao widget payload wrapped in widget/copy_text/name", () => {
   const response = toolsTeamNowTool(() => 0);
-  const node = JSON.parse(response.content[0].text);
+  const payload = JSON.parse(response.content[0].text);
 
-  assert.equal(node.type, "Card");
-  assert.equal(Object.hasOwn(node, "widget"), false);
-  assert.equal(Object.hasOwn(node, "name"), false);
-  assert.equal(Object.hasOwn(node, "status"), false);
+  assert.equal(payload.name, "tools_team_now");
+  assert.equal(payload.widget.type, "Card");
+  assert.equal(Object.hasOwn(payload.widget, "status"), false);
+  assert.ok(payload.copy_text.startsWith("**Tools Team Now**"));
 
-  const rows = node.children.filter((child) => child.type === "Row");
+  const rows = payload.widget.children.filter((child) => child.type === "Row");
   assert.equal(rows.length, 4);
 });
 
@@ -196,8 +196,8 @@ test("calling the tool with members arguments renders those members", () => {
     method: "tools/call",
     params: { name: "tools_team_now", arguments: { members: ["엘튼", "써니"] } }
   });
-  const node = JSON.parse(response.result.content[0].text);
-  const rows = node.children.filter((child) => child.type === "Row");
+  const payload = JSON.parse(response.result.content[0].text);
+  const rows = payload.widget.children.filter((child) => child.type === "Row");
 
   assert.equal(rows.length, 2);
 });
